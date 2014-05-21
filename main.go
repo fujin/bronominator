@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"math"
 	"sort"
 )
@@ -18,18 +19,18 @@ type Denominations []float64
 
 // Knowing the correct denomination is way cooler than knowing the number of combinations
 var denominations = Denominations{
-	//	1.0,
-	1.1,
-	1.2,
-	1.3,
-	1.4,
-	1.5,
-	1.6,
-	1.7,
-	1.8,
-	1.9,
-	//	2.0,
-	//	3.0,
+	1.0,
+	2.0,
+	3.0,
+	// 1.1,
+	// 1.2,
+	// 1.3,
+	// 1.4,
+	// 1.5,
+	// 1.6,
+	// 1.7,
+	// 1.8,
+	// 1.9,
 }
 
 const amount = 4.0
@@ -61,14 +62,24 @@ func (d *Denominations) Reverse() {
 }
 
 func main() {
+
 	fmt.Println("calculating appropriate denominations for amount:", amount)
 	denominations.Reverse()
 	denomSum = make([]float64, len(denominations), len(denominations))
+
+	// Rub some concurrency sauce on it
 	exactChange(amount, 0)
+
+	// spew
+	spew.Dump(amount)
+	spew.Dump(denominations)
+	spew.Dump(denomSum)
+
 	fmt.Printf("The right quantity of coins and/or bills for %.2f$:\n", amount)
 	for i := 0; i < len(denomSum); i++ {
 		if denomSum[i] > 0 {
 			fmt.Printf("\t%1.0f x $%.2f\t= $%.2f\n", denomSum[i], denominations[i], denomSum[i]*denominations[i])
 		}
 	}
+
 }
